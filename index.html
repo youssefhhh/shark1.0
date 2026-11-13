@@ -1,0 +1,1843 @@
+<!-- c:\Users\Carlos\Downloads\New folder (79)\index.html -->
+<!-- html / index.html / browser & webview2 / shark tweaks desktop suite -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>shark tweaks</title>
+  <link rel="icon" type="image/png" href="assets/logo_red_square.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-theme="shark">
+
+  <!-- ========================================================================
+       CUSTOM CHIC TITLEBAR (REPLACES OS TITLEBAR)
+       ======================================================================== -->
+  <div class="custom-titlebar" id="customTitlebar">
+    <div class="titlebar-drag-region" id="titlebarDragRegion">
+      <div class="titlebar-brand">
+        <div class="titlebar-logo">
+          <img src="assets/logo_red_square.png" alt="shark tweaks" />
+        </div>
+        <span class="titlebar-app-name">shark tweaks</span>
+        <span class="titlebar-app-ver">PRO v2.4</span>
+      </div>
+      <div class="titlebar-status">
+        <span class="status-indicator"></span>
+        <span class="status-text">Active Engine</span>
+      </div>
+    </div>
+    <div class="titlebar-window-controls">
+      <button type="button" class="titlebar-control-btn btn-min" id="btnWinMin" title="Minimize">
+        <i class="ri-subtract-line"></i>
+      </button>
+      <button type="button" class="titlebar-control-btn btn-max" id="btnWinMax" title="Maximize / Restore">
+        <i class="ri-checkbox-blank-line" id="iconWinMax"></i>
+      </button>
+      <button type="button" class="titlebar-control-btn btn-close" id="btnWinClose" title="Close">
+        <i class="ri-close-line"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       INITIAL WELCOME & LOGIN WINDOW (LICENSE KEY ONLY)
+       ======================================================================== -->
+  <section class="auth-screen" id="authScreen">
+    <div class="auth-window">
+      <!-- Left: Clean Client Info -->
+      <div class="auth-left-pane">
+        <div class="se-wordmark">
+          <div class="shark-logo-box login-logo">
+            <img src="assets/logo_red_square.png" alt="shark tweaks" class="shark-logo-img" />
+          </div>
+          <div class="brand-text-col">
+            <span class="se-logo-text" style="font-size: 20px; font-weight: 800; letter-spacing: -0.01em;">shark tweaks</span>
+            <span class="se-logo-ver">PRO v2.4</span>
+          </div>
+        </div>
+
+        <div class="auth-intro-block">
+          <h1>System & Emulator Suite</h1>
+          <p>
+            Dedicated control environment for hardware wattage telemetry, PUBG graphics configuration, system latency tweaks, recoil profiles, and GameLoop OpenGL recovery.
+          </p>
+        </div>
+
+        <div class="auth-spec-list">
+          <div class="auth-spec-item">
+            <span>Server Status</span>
+            <span style="color: var(--status-ok);">● Operational</span>
+          </div>
+          <div class="auth-spec-item">
+            <span>Emulator Support</span>
+            <span>GameLoop (32 / 64-bit)</span>
+          </div>
+          <div class="auth-spec-item">
+            <span>Build Version</span>
+            <span>2410.30-stable</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Login Form (License Key Only) -->
+      <div class="auth-right-pane">
+        <div class="login-header">
+          <h2>Sign In</h2>
+          <p>Enter your license key to unlock the workspace.</p>
+        </div>
+
+        <form id="loginForm">
+          <div id="licenseFields">
+            <div class="form-group">
+              <label class="form-label">
+                <span>License Key</span>
+                <span style="font-family:var(--font-mono); font-size:10.5px; color:var(--accent);">VIP KEY</span>
+              </label>
+              <div class="input-shell">
+                <i class="ri-key-2-line"></i>
+                <input type="text" class="mono-input" id="loginKey" value="" placeholder="Enter license key..." autocomplete="off" spellcheck="false" />
+              </div>
+            </div>
+          </div>
+
+          <div class="login-options-row">
+            <label class="checkbox-wrap">
+              <input type="checkbox" id="chkRememberKey" checked />
+              <span>Remember key</span>
+            </label>
+            <span class="hwid-pill" id="loginHwidTag">HWID: Detecting...</span>
+          </div>
+
+          <button type="submit" class="btn-primary-auth" id="btnLoginSubmit">
+            <span id="btnLoginText">Enter Workspace</span>
+            <i class="ri-arrow-right-line" id="btnLoginIcon"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       MAIN APPLICATION SHELL
+       ======================================================================== -->
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-brand">
+          <div class="se-wordmark">
+            <div class="shark-logo-box">
+              <img src="assets/logo_red_square.png" alt="shark tweaks" class="shark-logo-img" />
+            </div>
+            <div class="brand-text-col">
+              <span class="se-logo-text" style="font-size: 15px; font-weight: 800; letter-spacing: -0.01em;">shark tweaks</span>
+            </div>
+          </div>
+          <span class="se-logo-ver">v2.4</span>
+        </div>
+
+        <div>
+          <div class="nav-section-label">NAVIGATION</div>
+          <ul class="nav-list" id="mainNav">
+            <li class="nav-item active" data-target="view-home">
+              <div class="nav-item-left">
+                <i class="ri-hard-drive-3-line"></i>
+                <span>Home</span>
+              </div>
+            </li>
+
+            <li class="nav-item" data-target="view-gfx">
+              <div class="nav-item-left">
+                <i class="ri-aspect-ratio-line"></i>
+                <span>GFX</span>
+              </div>
+            </li>
+
+            <li class="nav-item" data-target="view-tweaks">
+              <div class="nav-item-left">
+                <i class="ri-equalizer-2-line"></i>
+                <span>Tweaks</span>
+              </div>
+              <span class="nav-badge" id="tweaksCountBadge">18</span>
+            </li>
+
+            <li class="nav-item" data-target="view-clean">
+              <div class="nav-item-left">
+                <i class="ri-brush-3-line"></i>
+                <span>Clean</span>
+              </div>
+            </li>
+
+            <li class="nav-item" data-target="view-norecoil">
+              <div class="nav-item-left">
+                <i class="ri-focus-3-line"></i>
+                <span>No Recoil</span>
+              </div>
+              <span class="nav-badge" id="recoilStateBadge">OFF</span>
+            </li>
+
+            <li class="nav-item" data-target="view-aim">
+              <div class="nav-item-left">
+                <i class="ri-crosshair-2-line"></i>
+                <span>Aim Assist</span>
+              </div>
+              <span class="nav-badge" id="aimStateBadge" style="background: rgba(255, 255, 255, 0.08); color: var(--text-muted);">OFF</span>
+            </li>
+
+            <li class="nav-item" data-target="view-gameloop">
+              <div class="nav-item-left">
+                <i class="ri-cpu-line"></i>
+                <span>GameLoop</span>
+              </div>
+            </li>
+
+            <li class="nav-item" data-target="view-opengl">
+              <div class="nav-item-left">
+                <i class="ri-tools-line"></i>
+                <span>OPEN GL Fixer</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="emulator-bridge-box">
+          <div class="bridge-row">
+            <span style="color: var(--text-secondary);">Emulator</span>
+            <span id="sidebarBridgeStatus" style="color: var(--status-ok); font-family: var(--font-mono); font-size: 11px;">● Connected</span>
+          </div>
+          <div class="bridge-sub" id="sidebarBridgePort">127.0.0.1:5555 // aow_exe</div>
+        </div>
+
+        <div class="user-profile-strip">
+          <div class="user-avatar-wrap">
+            <div class="avatar-circle" id="activeUserInitials">SA</div>
+            <div class="user-info-text">
+              <div class="u-name" id="activeUserName">Saloha</div>
+              <div class="u-plan" id="activeUserPlan">VIP LICENSE</div>
+            </div>
+          </div>
+          <button class="icon-btn" id="btnLockSession" title="Return to Login">
+            <i class="ri-logout-box-r-line"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Workspace -->
+    <main class="workspace">
+      <!-- Header -->
+      <header class="workspace-header">
+        <div class="header-title-area">
+          <h1 id="currentViewTitle">Home</h1>
+          <p id="currentViewSub">System hardware performance, GPU wattage draw, and CPU load.</p>
+        </div>
+
+        <div class="header-actions">
+          <div class="quick-telemetry-pill">
+            <span>GPU: <b id="topGpuWatt">244 W</b></span>
+            <span>·</span>
+            <span>CPU: <b id="topCpuLoad">38%</b></span>
+            <span>·</span>
+            <span>120 FPS</span>
+          </div>
+
+          <!-- Dedicated Themes Switcher Button -->
+          <button class="icon-btn theme-switch-btn" id="btnThemeToggle" title="Themes (اختر الثيم)">
+            <i class="ri-palette-line"></i>
+            <span class="theme-active-indicator" id="themeActiveIndicator"></span>
+          </button>
+
+          <button class="icon-btn" id="btnSoundToggle" title="Sound">
+            <i class="ri-volume-down-line"></i>
+          </button>
+
+          <button class="icon-btn" id="btnNotifDrawer" title="Notifications">
+            <i class="ri-notification-3-line"></i>
+            <span class="notif-badge-count" id="notifCount">1</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Views Area -->
+      <div class="views-scroll-area">
+
+        <!-- ==================================================================
+             VIEW 1: HOME (GPU WATTAGE, CPU, RAM)
+             ================================================================== -->
+        <section class="view-pane active" id="view-home">
+          <div class="telemetry-hero-row">
+            <!-- GPU Card -->
+            <div class="surface-card">
+              <div class="card-head">
+                <div class="card-title-group">
+                  <h3 id="gpuName">NVIDIA GeForce RTX 4080 SUPER</h3>
+                  <p>Dedicated Graphics Processor & Power Draw</p>
+                </div>
+                <span class="chip" id="gpuChip">16 GB GDDR6X</span>
+              </div>
+
+              <div class="hw-main-metric">
+                <div>
+                  <div class="hw-big-number"><span id="gpuUtilVal">76</span><small>% Load</small></div>
+                  <span style="font-size: 11.5px; color: var(--text-secondary);">Core Clock: <b id="gpuClockVal" style="font-family: var(--font-mono); color: var(--text-primary);">2790 MHz</b></span>
+                </div>
+                <div class="wattage-callout">
+                  <span class="watt-val" id="gpuWattVal">246.4 W</span>
+                  <span class="watt-lbl">GPU Power (ساحب كام وات)</span>
+                </div>
+              </div>
+
+              <div class="hw-sub-grid">
+                <div class="hw-sub-box">
+                  <span>VRAM Used</span>
+                  <strong id="gpuVramVal">11.2 / 16 GB</strong>
+                </div>
+                <div class="hw-sub-box">
+                  <span>Temperature</span>
+                  <strong id="gpuTempVal">61°C</strong>
+                </div>
+                <div class="hw-sub-box">
+                  <span>Power Limit</span>
+                  <strong id="gpuTdpPercent">77%</strong>
+                </div>
+              </div>
+
+              <div style="display:flex; justify-content:space-between; font-size:11.5px; color:var(--text-secondary);">
+                <span>Board Power Draw</span>
+                <span id="gpuWattBarLabel" style="font-family:var(--font-mono); color:var(--text-primary);">246 W / 320 W</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="gpuWattBar" style="width: 77%;"></div>
+              </div>
+
+              <div class="sparkline-box">
+                <svg id="gpuSparkline" viewBox="0 0 300 48" preserveAspectRatio="none">
+                  <path id="gpuAreaPath" fill="var(--accent-dim)" d=""></path>
+                  <path id="gpuLinePath" fill="none" stroke="var(--accent)" stroke-width="1.8" d=""></path>
+                </svg>
+              </div>
+            </div>
+
+            <!-- CPU Card -->
+            <div class="surface-card">
+              <div class="card-head">
+                <div class="card-title-group">
+                  <h3 id="cpuName">Intel Core i9-14900K</h3>
+                  <p>Processor Load, Temperature & Package Power</p>
+                </div>
+                <span class="chip" id="cpuClockChip">5.60 GHz</span>
+              </div>
+
+              <div class="hw-main-metric">
+                <div>
+                  <div class="hw-big-number"><span id="cpuUtilVal">38</span><small>% Load</small></div>
+                  <span style="font-size: 11.5px; color: var(--text-secondary);">Threads: <b id="cpuThreadsVal" style="font-family: var(--font-mono); color: var(--text-primary);">32 Active</b></span>
+                </div>
+                <div class="wattage-callout">
+                  <span class="watt-val" id="cpuWattVal">98.2 W</span>
+                  <span class="watt-lbl">CPU Power Draw</span>
+                </div>
+              </div>
+
+              <div class="hw-sub-grid">
+                <div class="hw-sub-box">
+                  <span>CPU Temp</span>
+                  <strong id="cpuTempVal">54°C</strong>
+                </div>
+                <div class="hw-sub-box">
+                  <span>Architecture</span>
+                  <strong id="cpuArchVal">24C / 32T</strong>
+                </div>
+                <div class="hw-sub-box">
+                  <span>Core Voltage</span>
+                  <strong id="cpuVoltVal">1.26 V</strong>
+                </div>
+              </div>
+
+              <div style="display:flex; justify-content:space-between; font-size:11.5px; color:var(--text-secondary);">
+                <span>Package Power Draw</span>
+                <span id="cpuWattBarLabel" style="font-family:var(--font-mono); color:var(--text-primary);">98 W / 253 W</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="cpuWattBar" style="width: 39%;"></div>
+              </div>
+
+              <div class="sparkline-box">
+                <svg id="cpuSparkline" viewBox="0 0 300 48" preserveAspectRatio="none">
+                  <path id="cpuAreaPath" fill="var(--accent-dim)" d=""></path>
+                  <path id="cpuLinePath" fill="none" stroke="var(--accent)" stroke-width="1.8" d=""></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="surface-card">
+              <div class="card-head">
+                <div class="card-title-group">
+                  <h3>System Memory (RAM)</h3>
+                  <p id="ramSub">Physical Memory Available</p>
+                </div>
+                <span class="chip" id="ramTotalChip">16 GB</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;">
+                <span id="ramUsedVal" style="font-family:var(--font-mono); font-size:22px; font-weight:700;">13.8 GB</span>
+                <span id="ramPctVal" style="font-size:11.5px; color:var(--text-secondary);">43% Used</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="ramBar" style="width: 43%;"></div>
+              </div>
+            </div>
+
+            <div class="surface-card">
+              <div class="card-head">
+                <div class="card-title-group">
+                  <h3>System Timer & Latency</h3>
+                  <p>Kernel Input Response</p>
+                </div>
+                <span class="chip" id="timerChip">0.50 ms</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;">
+                <span id="timerVal" style="font-family:var(--font-mono); font-size:22px; font-weight:700;">0.50 ms</span>
+                <span id="timerStatus" style="font-size:11.5px; color:var(--status-ok);">Optimal</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="timerBar" style="width: 50%;"></div>
+              </div>
+            </div>
+
+            <div class="surface-card">
+              <div class="card-head">
+                <div class="card-title-group">
+                  <h3>System Storage</h3>
+                  <p id="storageSub">Drive C: (System)</p>
+                </div>
+                <span class="chip" id="storageTotalChip">373 GB</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;">
+                <span id="storageUsedVal" style="font-family:var(--font-mono); font-size:22px; font-weight:700;">364 GB Used</span>
+                <span id="storageFreeVal" style="font-size:11.5px; color:var(--text-secondary);">8.7 GB Free</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="storageBar" style="width: 97%;"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+                        <!-- ==================================================================
+             VIEW 2: GFX (EXACT PUBG IN-GAME GRAPHICS LAYOUT + 4 SIDE BUTTONS)
+             ================================================================== -->
+        <section class="view-pane" id="view-gfx">
+          <div class="gfx-layout">
+            <div class="surface-card">
+              <div class="card-head">
+                <div class="card-title-group">
+                  <h3>Graphics</h3>
+                  <p>PUBG in-game combat graphics settings</p>
+                </div>
+                <span class="chip" id="gfxSelectedSummary">Smooth · 120 fps · Colorful</span>
+              </div>
+
+              <!-- 0. Game Version -->
+              <div class="gfx-section-block">
+                <div class="section-subtitle">
+                  <span>Game Version</span>
+                </div>
+                <div class="pill-selector-grid" data-gfx-group="version">
+                  <button class="seg-btn active" type="button" data-val="Global">Global</button>
+                  <button class="seg-btn" type="button" data-val="Korea">Korea</button>
+                  <button class="seg-btn" type="button" data-val="Vietnam">Vietnam</button>
+                  <button class="seg-btn" type="button" data-val="Taiwan">Taiwan</button>
+                  <button class="seg-btn" type="button" data-val="India">BGMI (India)</button>
+                </div>
+              </div>
+
+              <!-- 1. Graphics Quality -->
+              <div class="gfx-section-block">
+                <div class="section-subtitle">
+                  <span>Graphics</span>
+                </div>
+                <div class="pill-selector-grid" data-gfx-group="quality">
+                  <button class="seg-btn active" type="button" data-val="Smooth">Smooth</button>
+                  <button class="seg-btn" type="button" data-val="Balanced">Balanced</button>
+                  <button class="seg-btn" type="button" data-val="HD">HD</button>
+                  <button class="seg-btn" type="button" data-val="HDR">HDR</button>
+                  <button class="seg-btn" type="button" data-val="Ultra HDR">Ultra HDR</button>
+                </div>
+              </div>
+
+              <!-- 2. Frame Rate (FPS) -->
+              <div class="gfx-section-block">
+                <div class="section-subtitle">
+                  <span>Frame Rate</span>
+                </div>
+                <div class="pill-selector-grid" data-gfx-group="fps">
+                  <button class="seg-btn" type="button" data-val="30 fps">30 fps</button>
+                  <button class="seg-btn" type="button" data-val="40 fps">40 fps</button>
+                  <button class="seg-btn" type="button" data-val="60 fps">60 fps</button>
+                  <button class="seg-btn" type="button" data-val="90 fps">90 fps</button>
+                  <button class="seg-btn active" type="button" data-val="120 fps">120 fps</button>
+                </div>
+              </div>
+
+              <!-- 3. Visual Style -->
+              <div class="gfx-section-block">
+                <div class="section-subtitle">
+                  <span>Visual Style</span>
+                </div>
+                <div class="pubg-style-grid" data-gfx-group="style">
+                  <button class="pubg-style-card" type="button" data-style="Classic">
+                    <div class="style-preview style-classic"></div>
+                    <span class="pubg-style-name">Classic</span>
+                  </button>
+                  <button class="pubg-style-card active" type="button" data-style="Colorful">
+                    <div class="style-preview style-colorful"></div>
+                    <span class="pubg-style-name">Colorful</span>
+                  </button>
+                  <button class="pubg-style-card" type="button" data-style="Realistic">
+                    <div class="style-preview style-realistic"></div>
+                    <span class="pubg-style-name">Realistic</span>
+                  </button>
+                  <button class="pubg-style-card" type="button" data-style="Soft">
+                    <div class="style-preview style-soft"></div>
+                    <span class="pubg-style-name">Soft</span>
+                  </button>
+                  <button class="pubg-style-card" type="button" data-style="Movie">
+                    <div class="style-preview style-movie"></div>
+                    <span class="pubg-style-name">Movie</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 4. General Settings -->
+              <div class="gfx-section-block">
+                <div class="section-subtitle">
+                  <span>General Settings</span>
+                </div>
+                <div class="pill-selector-grid" data-gfx-group="shadows">
+                  <button class="seg-btn active" type="button" data-val="Disable Shadows">Disable Shadows</button>
+                  <button class="seg-btn" type="button" data-val="Enable Shadows">Enable Shadows</button>
+                  <button class="seg-btn active" type="button" data-val="Anti-Aliasing 2X">Anti-Aliasing 2X</button>
+                  <button class="seg-btn" type="button" data-val="Auto Adjust Graphics">Auto Adjust Graphics</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: 4 Side Action Buttons -->
+            <aside class="gfx-side-dock">
+              <!-- 1. Start / Connect GameLoop Card -->
+              <div class="surface-card action-dock-btn" id="btnGfxConnect" style="cursor: pointer;">
+                <div class="btn-left">
+                  <div class="btn-icon-box" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); flex-shrink: 0;">
+                    <i class="ri-play-circle-line"></i>
+                  </div>
+                  <div class="btn-text-wrap" style="min-width: 0; overflow: hidden;">
+                    <div style="font-size: 13px; font-weight: 700; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Start GameLoop</div>
+                    <div style="font-size: 10.5px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">AndroidEmulator // 5555</div>
+                  </div>
+                </div>
+                <span class="chip" id="gfxConnectTag" style="color: #10b981; border-color: rgba(16, 185, 129, 0.3); white-space: nowrap; flex-shrink: 0; margin-left: auto;">Connect</span>
+              </div>
+
+              <!-- 2. Boost GameLoop Card (NXTweaks ADB & Kernel Turbo) -->
+              <div class="surface-card action-dock-btn" id="btnGfxBoostGameLoop" style="cursor: pointer; border-color: rgba(6, 182, 212, 0.4); background: linear-gradient(135deg, rgba(6, 182, 212, 0.08) 0%, rgba(15, 23, 42, 0.6) 100%);">
+                <div class="btn-left">
+                  <div class="btn-icon-box" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.35); flex-shrink: 0;">
+                    <i class="ri-rocket-2-line"></i>
+                  </div>
+                  <div class="btn-text-wrap" style="min-width: 0; overflow: hidden;">
+                    <div style="font-size: 13px; font-weight: 700; color: #06b6d4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Boost GameLoop</div>
+                    <div style="font-size: 10.5px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Android Kernel & ADB Boost</div>
+                  </div>
+                </div>
+                <span class="chip" id="gfxBoostTag" style="border-color: rgba(6, 182, 212, 0.4); color: #06b6d4; white-space: nowrap; flex-shrink: 0; margin-left: auto;">Turbo</span>
+              </div>
+
+              <!-- 2. Apply GFX Card -->
+              <div class="surface-card" style="padding: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                  <span style="font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Apply Settings</span>
+                  <span style="font-size: 11px; color: var(--accent); font-family: var(--font-mono);" id="gfxApplyStatusText">Ready</span>
+                </div>
+                <button class="btn-primary-auth" type="button" id="btnGfxApply" style="width: 100%; height: 42px;">
+                  <i class="ri-check-double-line" style="margin-right: 6px;"></i>
+                  <span>Apply Combat Profile</span>
+                </button>
+                <div class="progress-track" style="margin-top: 10px;">
+                  <div class="progress-fill" id="gfxApplyProgressBar" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <!-- 3. Reset Guest Card -->
+              <div class="surface-card action-dock-btn" id="btnGfxResetGuest" style="cursor: pointer;">
+                <div class="btn-left">
+                  <div class="btn-icon-box" style="background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); flex-shrink: 0;">
+                    <i class="ri-user-unfollow-line"></i>
+                  </div>
+                  <div class="btn-text-wrap" style="min-width: 0; overflow: hidden;">
+                    <div style="font-size: 13px; font-weight: 700; color: #f59e0b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Reset Guest</div>
+                    <div style="font-size: 10.5px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Clear guest & ID</div>
+                  </div>
+                </div>
+                <span class="chip" id="gfxResetGuestTag" style="border-color: rgba(245, 158, 11, 0.3); color: #f59e0b; flex-shrink: 0; margin-left: auto;">Reset</span>
+              </div>
+
+              <!-- 4. Kill Emulator Card -->
+              <div class="surface-card action-dock-btn" id="btnGfxKillEmulator" style="cursor: pointer;">
+                <div class="btn-left">
+                  <div class="btn-icon-box" style="background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); flex-shrink: 0;">
+                    <i class="ri-shut-down-line"></i>
+                  </div>
+                  <div class="btn-text-wrap" style="min-width: 0; overflow: hidden;">
+                    <div style="font-size: 13px; font-weight: 700; color: #ef4444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Kill Emulator</div>
+                    <div style="font-size: 10.5px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Force close all tasks</div>
+                  </div>
+                </div>
+                <i class="ri-arrow-right-s-line" style="color: var(--text-muted); flex-shrink: 0; margin-left: auto;"></i>
+              </div>
+
+              <!-- System Tip -->
+              <div class="surface-card" style="padding: 14px; border: 1px dashed var(--border-base);">
+                <div style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.5;">
+                  <i class="ri-information-line" style="color: var(--accent); margin-right: 4px;"></i>
+                  Combat FPS profile unlocks 120 FPS frame caps and forces low-latency rendering in GameLoop.
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW 3: SYSTEM & KERNEL TWEAKS (NATIVE IN-MEMORY EXECUTION)
+             ================================================================== -->
+        <section class="view-pane" id="view-tweaks">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <span style="font-size:12.5px; color:var(--text-secondary);">
+              Hardware-accelerated kernel and OS optimizations executed natively in memory for maximum FPS.
+            </span>
+            <div style="display:flex; gap:8px;">
+              <button class="seg-btn" type="button" id="btnToggleSelectAll">
+                <i class="ri-checkbox-line" id="selectAllIcon" style="font-size:13px;"></i>
+                <span id="selectAllText">Deselect All</span>
+              </button>
+              <button class="seg-btn active" type="button" id="btnApplyAllTweaks">Run Selected Tweaks</button>
+            </div>
+          </div>
+
+          <div class="grid-2" id="tweaksGrid">
+            <!-- 01 -->
+            <div class="surface-card tweak-card" data-tweak="1">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">01. GameLoop CPU & GPU Priority Boost</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">KERNEL</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Sets AndroidEmulatorEx & aow_exe to High CPU/IO priority and enables Hardware GPU Scheduling (HAGS).</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 02 -->
+            <div class="surface-card tweak-card" data-tweak="2">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">02. Unlock Ultimate Power Plan & Unpark CPU</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">POWER</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Activates hidden Windows Ultimate Performance scheme, unparks 100% CPU cores, and disables Power Throttling.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 03 -->
+            <div class="surface-card tweak-card" data-tweak="3">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">03. Disable GameDVR & Fullscreen Optimizations</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">LATENCY</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Turns off Xbox GameDVR background capture hooks and disables Fullscreen Optimizations for lower input lag.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 04 -->
+            <div class="surface-card tweak-card" data-tweak="4">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">04. Win32PrioritySeparation (0x26) & MMCSS</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">MMCSS</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Sets foreground CPU quantum to 0x26, SystemResponsiveness to 0%, and boosts MMCSS Games GPU priority to 8.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 05 -->
+            <div class="surface-card tweak-card" data-tweak="5">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">05. Network Ping & TCP NoDelay Optimizer</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">TCP/IP</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Disables Nagle's algorithm (TCPNoDelay=1, TcpAckFrequency=1), removes NetworkThrottlingIndex, and flushes DNS.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 06 -->
+            <div class="surface-card tweak-card" data-tweak="6">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">06. RAM Optimizer & Memory Compression Off</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">RAM</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Disables Windows Memory Compression CPU overhead, locks kernel in RAM, and optimizes SvcHost split threshold.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 07 -->
+            <div class="surface-card tweak-card" data-tweak="7">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">07. Mouse 1:1 Raw Aim & Input Queue Buffer</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">RAW-AIM</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Removes Windows mouse acceleration, injects linear 1:1 SmoothMouse curves, and lowers mouse/keyboard queue buffers.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 08 -->
+            <div class="surface-card tweak-card" data-tweak="8">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">08. Kernel Timer & BCD Low-Latency Tweaks</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">TIMER</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Disables dynamic tick, enables platform tick, removes forced HPET clock drag, and enables global timer requests.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 09 -->
+            <div class="surface-card tweak-card" data-tweak="9">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">09. Disable Telemetry & Background Bloat Services</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">SERVICES</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Stops and disables DiagTrack, SysMain, MapsBroker, PcaSvc, WerSvc, and background apps that spike CPU load.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 10 -->
+            <div class="surface-card tweak-card" data-tweak="10">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">10. Clean Temp, Shader Cache & GameLoop Logs</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">CLEAN</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Purges Windows Temp, Prefetch, DirectX/NVIDIA/AMD Shader Caches, and GameLoop log junk to fix render stutters.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 11 -->
+            <div class="surface-card tweak-card" data-tweak="11">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">11. MSI Mode & GPU/NIC High Interrupt Priority</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">MSI-MODE</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Enables Message Signaled Interrupts (MSISupported=1) on PCIe GPU & Network Card and sets GPU DevicePriority to High.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 12 -->
+            <div class="surface-card tweak-card" data-tweak="12">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">12. Disable VBS, HVCI & Spectre/Meltdown CPU Cap</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">SECURITY</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Unlocks +10-15% raw CPU IPC for GameLoop by disabling Virtualization Security, HVCI, and branch prediction mitigations.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 13 -->
+            <div class="surface-card tweak-card" data-tweak="13">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">13. Force GPU P0 State & Disable ULPS / HDCP</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">GPU-P0</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Sets DisableDynamicPstate=1, EnableUlps=0, and RMHdcpKeyglobZero=1 so GPU never downclocks during PUBG fights.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 14 -->
+            <div class="surface-card tweak-card" data-tweak="14">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">14. GameLoop Deep Registry 120FPS & ROG 8 Spoof</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">120FPS</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Injects VSync=0, GlobalRenderCache=1, 8GB RAM, 8 Cores, and ASUS ROG Phone 8 signature directly into MobileGamePC registry.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 15 -->
+            <div class="surface-card tweak-card" data-tweak="15">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">15. DWM MPO Stutter Fix, FlipQueue=1 & CSRSS Boost</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">DWM-MPO</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Disables Multi-Plane Overlay (OverlayTestMode=5), minimizes DXGI frame queue, and sets csrss.exe to Realtime/High priority.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 16 -->
+            <div class="surface-card tweak-card" data-tweak="16">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">16. Disable CPU C-States Sleep & Aggressive Turbo</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">C-STATES</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Locks CPU cores in C0 active state, sets Energy Preference to 0, and enables Aggressive Turbo Boost for 1% low FPS stability.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 17 -->
+            <div class="surface-card tweak-card" data-tweak="17">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">17. NTFS & NVMe SSD Texture Streaming Accelerator</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">NVME-IOPS</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Disables NTFS LastAccess, 8.3 names, encryption, StorPort power saving, and doubles NTFS kernel memory cache.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+
+            <!-- 18 -->
+            <div class="surface-card tweak-card" data-tweak="18">
+              <div class="tweak-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                  <h4 contenteditable="true" spellcheck="false" style="margin:0;">18. Strip ExploitGuard (CFG) & Defender on GameLoop</h4>
+                  <span class="chip" style="font-size:10px; padding:2px 6px; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">CFG-OFF</span>
+                </div>
+                <p contenteditable="true" spellcheck="false">Disables Control Flow Guard (CFG) memory hooks and Defender real-time scanning specifically on GameLoop processes.</p>
+              </div>
+              <label class="switch"><input type="checkbox" class="tweak-toggle" checked /><span class="slider"></span></label>
+            </div>
+          </div>
+        </section>
+
+                        <!-- ==================================================================
+             VIEW 4: NO RECOIL (ALL 43 WEAPONS WITH IMAGES + SINGLE SCOPE SLIDER)
+             ================================================================== -->
+        <section class="view-pane" id="view-norecoil">
+          <div class="norecoil-layout">
+            <!-- Left: 43 Weapons Grid -->
+            <div class="surface-card">
+              <div class="card-head">
+                <div class="card-title-group">
+                  <h3>Weapons Armory</h3>
+                  <p>Select any weapon to configure its scope recoil control.</p>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="recoilMasterToggle" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="weapon-filter-bar">
+                <div class="weapon-cat-tabs" id="weaponCatTabs">
+                  <button class="cat-tab active" type="button" data-cat="ALL">All (7)</button>
+                  <button class="cat-tab" type="button" data-cat="AR">AR (6)</button>
+                  <button class="cat-tab" type="button" data-cat="LMG">LMG (1)</button>
+                </div>
+                <div class="weapon-search-box">
+                  <i class="ri-search-line" style="color: var(--text-muted); font-size: 13px;"></i>
+                  <input type="text" id="weaponSearchInput" placeholder="Search weapons..." />
+                </div>
+              </div>
+
+              <div class="weapon-armory-grid" id="weaponArmoryGrid">
+                <!-- Populated dynamically with all 43 weapons with images -->
+              </div>
+            </div>
+
+            <!-- Right: Weapon & Scope Tuning Card -->
+            <div class="surface-card">
+              <div class="selected-weapon-banner">
+                <div class="sel-weapon-left">
+                  <div class="sel-thumb-big">
+                    <img id="selWeaponImg" src="assets/weapons/Item_Weapon_HK416_C.png" alt="M416" />
+                  </div>
+                  <div>
+                    <h3 id="selWeaponTitle" style="font-size: 16px; font-weight: 700; margin: 0 0 2px;">M416</h3>
+                    <span id="selWeaponSpecs" style="font-size: 11.5px; color: var(--text-secondary);">5.56mm AR • 857 RPM</span>
+                  </div>
+                </div>
+                <span class="chip" id="recoilActiveBadge">Disabled</span>
+              </div>
+
+              <!-- Scope Selection -->
+              <div class="section-subtitle" style="margin-top: 16px;">
+                <span>Optics & Scopes</span>
+                <span id="activeScopeLabel" style="font-family: var(--font-mono); color: var(--accent); font-weight: 600;">Red Dot</span>
+              </div>
+              <div class="pill-selector-grid" id="scopeSelectorGrid" style="grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                <button class="seg-btn scope-btn active" type="button" data-scope="Red Dot">
+                  <img src="assets/pubg/reddot.png" alt="Red Dot" />
+                  <span>Red Dot</span>
+                </button>
+                <button class="seg-btn scope-btn" type="button" data-scope="2x Scope">
+                  <img src="assets/pubg/scope2x.png" alt="2x" />
+                  <span>2x Scope</span>
+                </button>
+                <button class="seg-btn scope-btn" type="button" data-scope="3x Scope">
+                  <img src="assets/pubg/scope3x.png" alt="3x" />
+                  <span>3x Scope</span>
+                </button>
+                <button class="seg-btn scope-btn" type="button" data-scope="4x Scope">
+                  <img src="assets/pubg/scope4x.png" alt="4x" />
+                  <span>4x Scope</span>
+                </button>
+                <button class="seg-btn scope-btn" type="button" data-scope="6x Scope">
+                  <img src="assets/pubg/scope6x.png" alt="6x" />
+                  <span>6x Scope</span>
+                </button>
+                <button class="seg-btn scope-btn" type="button" data-scope="8x Scope">
+                  <img src="assets/pubg/scope8x.png" alt="8x" />
+                  <span>8x Scope</span>
+                </button>
+              </div>
+
+              <!-- Precision Recoil Slider -->
+              <div class="single-scope-slider-card" style="margin-top: 18px; padding: 14px; border-radius: var(--radius-sm); background: var(--bg-input); border: 1px solid var(--border-base);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span id="singleSliderTitle" style="font-size: 12.5px; font-weight: 600; color: var(--text-primary);">Red Dot Pull Strength</span>
+                  <span id="recoilSingleVal" style="font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: var(--accent);">19 %</span>
+                </div>
+                <input type="range" class="se-range" id="recoilSingleSlider" min="0" max="100" value="19" />
+                <div class="slider-ticks">
+                  <span>0% Off</span>
+                  <span>25% Soft</span>
+                  <span>50% Balanced</span>
+                  <span>75% Heavy</span>
+                  <span>100% Max</span>
+                </div>
+              </div>
+
+              <!-- Action Bar: Save Button & Global Hotkey Info -->
+              <div style="display: flex; gap: 8px; margin-top: 16px;">
+                <button class="btn-primary-auth" type="button" id="btnSaveRecoilProfile" style="flex: 1; height: 42px;">
+                  <i class="ri-save-line" style="margin-right: 6px;"></i>
+                  <span>Save Profile</span>
+                </button>
+              </div>
+
+              <div style="margin-top: 14px; display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 8px; background: var(--accent-dim); border: 1px solid var(--accent-border);">
+                <span style="font-size: 11.5px; color: var(--text-secondary);">Toggle Stabilizer in-game:</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--accent); background: var(--accent-dim); border: 1px solid var(--accent-border); padding: 2px 7px; border-radius: 4px;">F9 [Hotkey]</span>
+              </div>
+
+              <!-- Floating In-Game HUD Card (VIP Style) -->
+              <div class="hud-control-card" style="margin-top: 14px; padding: 12px 14px; border-radius: 8px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-base);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <i class="ri-tv-2-line" style="color: var(--accent); font-size: 16px;"></i>
+                    <span style="font-size: 12.5px; font-weight: 600; color: var(--text-primary);">Floating HUD Overlay</span>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="switch-hud-overlay" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <button class="btn-secondary-auth" type="button" id="btn-hud-lock" style="width: 100%; height: 34px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--border-base); background: rgba(255, 255, 255, 0.04); color: var(--text-secondary); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s ease;">
+                  <i class="ri-lock-line" id="iconHudLock"></i>
+                  <span id="textHudLock">HUD Position Locked</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: AIM ASSIST (AI NEURAL TARGET TRACKING & REAL-TIME HARDWARE FOV)
+             ================================================================== -->
+        <section class="view-pane" id="view-aim">
+          <div class="aim-layout">
+            <!-- Top Hero Panel: Engine status and Master Switch -->
+            <div class="aim-hero-panel">
+              <div class="aim-hero-left">
+                <h3>
+                  <i class="ri-crosshair-2-line" style="color: var(--accent);"></i>
+                  <span>AI Neural Target Tracking</span>
+                </h3>
+                <p>DirectML hardware tensor inference target tracking (Silent Background Execution)</p>
+                <div class="aim-device-selector" style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">Inference Engine:</span>
+                  <div class="device-pill-group">
+                    <button type="button" class="device-btn active" id="btn-device-gpu" data-device="gpu" title="DirectML GPU Tensor Hardware Acceleration (Recommended)">
+                      <i class="ri-dashboard-3-line"></i> DirectML GPU
+                    </button>
+                    <button type="button" class="device-btn" id="btn-device-cpu" data-device="cpu" title="Multi-Core CPU Execution">
+                      <i class="ri-cpu-line"></i> Multi-Core CPU
+                    </button>
+                  </div>
+                </div>
+                <div class="aim-fps-selector" style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">FPS Target:</span>
+                  <div class="device-pill-group" id="fps-pill-group">
+                    <button type="button" class="device-btn fps-btn" data-fps="30" title="Low CPU usage">30 FPS</button>
+                    <button type="button" class="device-btn fps-btn active" data-fps="40" title="Solid 40 FPS (Recommended)">40 FPS</button>
+                    <button type="button" class="device-btn fps-btn" data-fps="60" title="Smooth 60 FPS">60 FPS</button>
+                    <button type="button" class="device-btn fps-btn" data-fps="90" title="High refresh 90 FPS">90 FPS</button>
+                    <button type="button" class="device-btn fps-btn" data-fps="0" title="Unlimited Max FPS">Max</button>
+                  </div>
+                </div>
+                <div class="aim-hero-badges" style="margin-top: 10px;">
+                  <span class="chip" id="chip-aim-engine-badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">
+                    <i class="ri-cpu-line"></i> DirectML Ready
+                  </span>
+                  <span class="chip" style="font-family: var(--font-mono); color: var(--text-secondary);">
+                    <i class="ri-flashlight-line"></i> 0.6ms Latency
+                  </span>
+                  <span class="chip" style="color: var(--accent); border-color: var(--accent-border);">
+                    <i class="ri-focus-3-line"></i> YOLOv8s Precision
+                  </span>
+                </div>
+              </div>
+
+              <div class="aim-hero-actions">
+                <button type="button" class="aim-toggle-btn active" id="btn-toggle-fov-overlay" title="Toggle real-time transparent FOV circle on screen">
+                  <i class="ri-focus-line"></i> Screen FOV: <span id="lbl-fov-overlay-status" style="font-weight: 700; color: #10b981;">VISIBLE</span>
+                </button>
+                <button type="button" class="aim-toggle-btn" id="btn-toggle-aim-window" title="Toggle AI vision debug feed window">
+                  <i class="ri-terminal-window-line"></i> AI Window: <span id="lbl-aim-window-status">OFF</span>
+                </button>
+                <button type="button" class="aim-toggle-btn aim-master-btn" id="btn-master-aim" title="Activate/Deactivate Master Aim Assist Engine">
+                  <i class="ri-crosshair-2-line"></i> Aim Assist: <span id="lbl-master-aim-status">OFF</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Presets Grid -->
+            <div class="aim-presets-grid">
+              <div class="preset-card" id="preset-smooth" data-preset="smooth">
+                <div class="preset-icon"><i class="ri-shield-check-line"></i></div>
+                <h4>Legit Smooth</h4>
+                <p>Human-like gentle pull, low speed, maximum safety profile.</p>
+                <div class="preset-stats"><span>1.2x Sens</span> • <span>24.0 Smooth</span> • <span>35ms Step</span></div>
+              </div>
+
+              <div class="preset-card active" id="preset-balanced" data-preset="balanced">
+                <div class="preset-icon"><i class="ri-scales-3-line"></i></div>
+                <h4>Balanced Comp</h4>
+                <p>Optimal assist speed and precision for competitive sprays.</p>
+                <div class="preset-stats"><span>1.8x Sens</span> • <span>15.0 Smooth</span> • <span>60ms Step</span></div>
+              </div>
+
+              <div class="preset-card" id="preset-snappy" data-preset="snappy">
+                <div class="preset-icon"><i class="ri-flashlight-line"></i></div>
+                <h4>Tactical Snappy</h4>
+                <p>Rapid micro-flick target acquisition for high-tier gameplay.</p>
+                <div class="preset-stats"><span>2.4x Sens</span> • <span>8.0 Smooth</span> • <span>90ms Step</span></div>
+              </div>
+            </div>
+
+            <!-- Main Content: Left Sliders & Right Anatomical / FOV Tools -->
+            <div class="aim-content-grid">
+              <!-- Left: Sliders Grid -->
+              <div class="surface-card">
+                <div class="card-head">
+                  <div class="card-title-group">
+                    <h3>Tracking Parameters</h3>
+                    <p>Fine-tune DirectML inference sensitivity, smoothness, and bounds.</p>
+                  </div>
+                  <span class="chip" id="aimActivePresetTag">Balanced Profile</span>
+                </div>
+
+                <div class="aim-sliders-grid">
+                  <div class="aim-slider-item">
+                    <div class="aim-slider-top">
+                      <span class="aim-slider-label">Sensitivity Multiplier</span>
+                      <span class="aim-slider-val" id="val-sens">1.8x</span>
+                    </div>
+                    <input type="range" class="slider-input" id="slider-sens" min="0.5" max="3.5" step="0.1" value="1.8">
+                  </div>
+
+                  <div class="aim-slider-item">
+                    <div class="aim-slider-top">
+                      <span class="aim-slider-label">Smoothing Factor</span>
+                      <span class="aim-slider-val" id="val-smooth">15.0</span>
+                    </div>
+                    <input type="range" class="slider-input" id="slider-smooth" min="5" max="30" step="1" value="15">
+                  </div>
+
+                  <div class="aim-slider-item">
+                    <div class="aim-slider-top">
+                      <span class="aim-slider-label">FOV Search Radius</span>
+                      <span class="aim-slider-val" id="val-fov">44 px</span>
+                    </div>
+                    <input type="range" class="slider-input" id="slider-fov" min="20" max="150" step="2" value="44">
+                  </div>
+
+                  <div class="aim-slider-item">
+                    <div class="aim-slider-top">
+                      <span class="aim-slider-label">Compensation Step Speed</span>
+                      <span class="aim-slider-val" id="val-step">60 ms</span>
+                    </div>
+                    <input type="range" class="slider-input" id="slider-step" min="10" max="100" step="5" value="60">
+                  </div>
+
+                  <div class="aim-slider-item">
+                    <div class="aim-slider-top">
+                      <span class="aim-slider-label">FOV Offset X (Horizontal)</span>
+                      <span class="aim-slider-val" id="val-fov-x">0 px</span>
+                    </div>
+                    <input type="range" class="slider-input" id="slider-fov-x" min="-100" max="100" step="1" value="0">
+                  </div>
+
+                  <div class="aim-slider-item">
+                    <div class="aim-slider-top">
+                      <span class="aim-slider-label">FOV Offset Y (Vertical)</span>
+                      <span class="aim-slider-val" id="val-fov-y">-4 px</span>
+                    </div>
+                    <input type="range" class="slider-input" id="slider-fov-y" min="-100" max="100" step="1" value="-4">
+                  </div>
+
+                  <div class="aim-slider-item">
+                    <div class="aim-slider-top">
+                      <span class="aim-slider-label">Pitch Ratio (Y/X)</span>
+                      <span class="aim-slider-val" id="val-pitch">2.5x</span>
+                    </div>
+                    <input type="range" class="slider-input" id="slider-pitch" min="1.0" max="4.0" step="0.1" value="2.5">
+                  </div>
+
+                  <div class="aim-slider-item">
+                    <div class="aim-slider-top">
+                      <span class="aim-slider-label">Max Speed Cap</span>
+                      <span class="aim-slider-val" id="val-max-speed">70</span>
+                    </div>
+                    <input type="range" class="slider-input" id="slider-max-speed" min="10" max="150" step="5" value="70">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Bones & FOV Direct Alignment -->
+              <div style="display: flex; flex-direction: column; gap: 16px;">
+                <!-- Anatomical Locking Bone -->
+                <div class="surface-card">
+                  <div class="card-head">
+                    <div class="card-title-group">
+                      <h3>Target Locking Bone</h3>
+                      <p>Select anatomical target body center for tensor locking.</p>
+                    </div>
+                    <span class="chip" id="activeBoneTag" style="color: var(--accent);">CHEST</span>
+                  </div>
+
+                  <div class="bones-list">
+                    <div class="bone-btn" id="bone-btn-head" data-bone="head">
+                      <i class="ri-user-star-line"></i> Head
+                    </div>
+                    <div class="bone-btn" id="bone-btn-neck" data-bone="neck">
+                      <i class="ri-user-voice-line"></i> Neck
+                    </div>
+                    <div class="bone-btn active" id="bone-btn-chest" data-bone="chest">
+                      <i class="ri-user-heart-line"></i> Upper Chest
+                    </div>
+                    <div class="bone-btn" id="bone-btn-pelvis" data-bone="pelvis">
+                      <i class="ri-user-3-line"></i> Pelvis
+                    </div>
+                  </div>
+                </div>
+
+                <!-- FOV Hardware Alignment Pad -->
+                <div class="surface-card fov-alignment-card">
+                  <div class="card-head">
+                    <div class="card-title-group">
+                      <h3>FOV Hardware Alignment Pad</h3>
+                      <p>Real-time hardware overlay repositioning and live preview.</p>
+                    </div>
+                    <button type="button" class="btn-secondary-auth" id="btn-reset-fov" style="height: 26px; padding: 0 10px; font-size: 11px; display: flex; align-items: center; gap: 4px; border: 1px solid var(--border-base); background: rgba(255, 255, 255, 0.04); color: var(--text-secondary); border-radius: var(--radius-xs); cursor: pointer;">
+                      <i class="ri-restart-line"></i> Reset (0, 0)
+                    </button>
+                  </div>
+
+                  <div class="fov-nudge-layout">
+                    <!-- D-Pad Directional Grid -->
+                    <div class="dpad-grid">
+                      <div></div>
+                      <button type="button" class="dpad-btn" id="btn-nudge-up" title="Up 20px">&#9650;</button>
+                      <div></div>
+                      <button type="button" class="dpad-btn" id="btn-nudge-left" title="Left 20px">&#9664;</button>
+                      <button type="button" class="dpad-btn center-btn" id="btn-nudge-center" title="Center (0,0)">&#9679;</button>
+                      <button type="button" class="dpad-btn" id="btn-nudge-right" title="Right 20px">&#9654;</button>
+                      <div></div>
+                      <button type="button" class="dpad-btn" id="btn-nudge-down" title="Down 20px">&#9660;</button>
+                      <div></div>
+                    </div>
+
+                    <!-- Live FOV Preview Box -->
+                    <div class="fov-radar-box" id="fovRadarBox" title="Live FOV Ring Position">
+                      <div class="fov-radar-crosshair-h"></div>
+                      <div class="fov-radar-crosshair-v"></div>
+                      <div class="fov-radar-circle" id="fovRadarCircle" style="width: 44px; height: 44px; transform: translate(0px, -2px);"></div>
+                    </div>
+                  </div>
+
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button type="button" class="btn-secondary-auth" id="btn-jump-left" style="height: 28px; padding: 0 12px; font-size: 11.5px; border: 1px solid var(--border-base); background: rgba(255, 255, 255, 0.04); color: var(--text-secondary); border-radius: var(--radius-xs); cursor: pointer;">&laquo; -50px</button>
+                    <button type="button" class="btn-secondary-auth" id="btn-jump-right" style="height: 28px; padding: 0 12px; font-size: 11.5px; border: 1px solid var(--border-base); background: rgba(255, 255, 255, 0.04); color: var(--text-secondary); border-radius: var(--radius-xs); cursor: pointer;">+50px &raquo;</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+                <!-- ==================================================================
+             VIEW 5: GAMELOOP ENGINE (MATCHED 1:1 TO OFFICIAL GAMELOOP SUITE)
+             ================================================================== -->
+        <section class="view-pane" id="view-gameloop">
+          <div class="gameloop-suite-container">
+            <!-- Left Column: Rendering Engine + Engine Hooks -->
+            <div class="gameloop-suite-col">
+              <!-- Card 1: Rendering Engine -->
+              <div class="surface-card gameloop-card">
+                <div class="gameloop-section-title">
+                  <i class="ri-cpu-line" style="color: var(--accent); font-size: 16px;"></i>
+                  <span>RENDERING ENGINE</span>
+                </div>
+                
+                <div class="gameloop-group-block">
+                  <div class="gameloop-sub-label">Rendering API</div>
+                  <div class="gameloop-pill-row" data-gl-group="render-api">
+                    <button class="seg-btn" type="button" data-val="DirectX+">DirectX+</button>
+                    <button class="seg-btn active" type="button" data-val="OpenGL+">OpenGL+</button>
+                    <button class="seg-btn" type="button" data-val="Auto">Auto</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 2: Engine Hooks -->
+              <div class="surface-card gameloop-card" style="margin-top: 18px;">
+                <div class="gameloop-section-title">
+                  <i class="ri-shield-flash-line" style="color: var(--accent); font-size: 16px;"></i>
+                  <span>ENGINE HOOKS</span>
+                </div>
+
+                <div class="gameloop-hooks-list">
+                  <div class="gameloop-hook-row">
+                    <div class="gameloop-hook-label">
+                      <span>Enable Rendering Cache</span>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="glHookCache" checked />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="gameloop-hook-row">
+                    <div class="gameloop-hook-label">
+                      <span>Force Global Cache</span>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="glHookGlobalCache" checked />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="gameloop-hook-row">
+                    <div class="gameloop-hook-label">
+                      <span>Prioritize Dedicated GPU</span>
+                      <span class="gameloop-badge">GPU</span>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="glHookGpu" checked />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="gameloop-hook-row">
+                    <div class="gameloop-hook-label">
+                      <span>Enable Rendering Optimization</span>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="glHookOpt" checked />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="gameloop-hook-row">
+                    <div class="gameloop-hook-label">
+                      <span>Enable Root Authority</span>
+                      <span class="gameloop-badge">ROOT</span>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="glHookRoot" />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="gameloop-hook-row">
+                    <div class="gameloop-hook-label">
+                      <span>Enable ADB Debugging</span>
+                      <span class="gameloop-badge">DEVICE</span>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="glHookAdb" checked />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Game Resolution & Settings -->
+            <div class="gameloop-suite-col">
+              <div class="surface-card gameloop-card">
+                <div class="gameloop-section-title">
+                  <i class="ri-tv-2-line" style="color: var(--accent); font-size: 16px;"></i>
+                  <span>GAME RESOLUTION & SETTINGS</span>
+                </div>
+
+                <!-- Resolution -->
+                <div class="gameloop-group-block">
+                  <div class="gameloop-sub-label">Resolution</div>
+                  <div class="gameloop-pill-row" data-gl-group="resolution">
+                    <button class="seg-btn" type="button" data-val="720P">SD 720P</button>
+                    <button class="seg-btn active" type="button" data-val="1080P">HD 1080P</button>
+                    <button class="seg-btn" type="button" data-val="2K">2K QHD</button>
+                  </div>
+                </div>
+
+                <!-- Graphics Quality -->
+                <div class="gameloop-group-block">
+                  <div class="gameloop-sub-label">Graphics Quality</div>
+                  <div class="gameloop-pill-row" data-gl-group="quality">
+                    <button class="seg-btn active" type="button" data-val="Auto">Auto</button>
+                    <button class="seg-btn" type="button" data-val="Smooth">Smooth</button>
+                    <button class="seg-btn" type="button" data-val="Balanced">Balanced</button>
+                    <button class="seg-btn" type="button" data-val="HD">HD</button>
+                  </div>
+                </div>
+
+                <!-- FPS Cap -->
+                <div class="gameloop-group-block">
+                  <div class="gameloop-sub-label">FPS Cap</div>
+                  <div class="gameloop-pill-row" data-gl-group="fps">
+                    <button class="seg-btn" type="button" data-val="Default">Default</button>
+                    <button class="seg-btn" type="button" data-val="30">30 FPS</button>
+                    <button class="seg-btn" type="button" data-val="40">40 FPS</button>
+                    <button class="seg-btn" type="button" data-val="60">60 FPS</button>
+                    <button class="seg-btn" type="button" data-val="90">90 FPS</button>
+                  </div>
+                </div>
+
+                <!-- Save Button -->
+                <button class="btn-gameloop-save" type="button" id="btnApplyGameLoop">
+                  <i class="ri-save-3-line" style="margin-right: 8px; font-size: 16px;"></i>
+                  <span>Save GameLoop Settings</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW 6: OPEN GL FIXER (STRICTLY 2 BUTTONS + LIVE LOG CONSOLE)
+             ================================================================== -->
+        <section class="view-pane" id="view-opengl">
+          <div class="opengl-center-wrap">
+            <div class="surface-card opengl-hero-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <div>
+                  <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">OPEN GL Fixer</h2>
+                  <p style="color: var(--text-secondary); font-size: 12.5px;">
+                    Start or remove the custom OpenGL rendering fix for the emulator.
+                  </p>
+                </div>
+                <span class="chip" id="openglStateBadge">Standby</span>
+              </div>
+
+              <div class="hw-sub-grid">
+                <div class="hw-sub-box">
+                  <span>Target Engine</span>
+                  <strong>GameLoop OpenGL+</strong>
+                </div>
+                <div class="hw-sub-box">
+                  <span>Current State</span>
+                  <strong id="openglPipelineText">Default (DirectX)</strong>
+                </div>
+                <div class="hw-sub-box">
+                  <span>Profile / GPU</span>
+                  <strong style="color: var(--status-ok);">Adreno 750 / ES 3.2</strong>
+                </div>
+              </div>
+
+              <!-- Strictly 2 Buttons: Start & Remove -->
+              <div class="opengl-two-buttons">
+                <button type="button" class="btn-opengl-start" id="btnOpenGlStart">
+                  <i class="ri-play-fill"></i>
+                  <span>Start (Run OpenGL)</span>
+                </button>
+
+                <button type="button" class="btn-opengl-remove" id="btnOpenGlRemove">
+                  <i class="ri-refresh-line"></i>
+                  <span>Remove (Fix VT / Restore)</span>
+                </button>
+              </div>
+
+              <!-- Progress bar -->
+              <div class="progress-track" id="openglProgressTrack" style="margin-top: 18px; height: 5px; display: none;">
+                <div class="progress-fill" id="openglProgressBar" style="width: 0%; transition: width 0.3s ease;"></div>
+              </div>
+
+              <!-- Live Console Log Box (Matching OpenGL Test & Cleaner) -->
+              <div class="clean-console-wrap" style="margin-top: 20px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="status-indicator"></span>
+                    <h4 style="font-size:12.5px; font-weight:700; color:var(--text-primary); margin:0;">OpenGL Engine Live Console</h4>
+                  </div>
+                  <button class="seg-btn" type="button" id="btnClearOpenGlLog" style="padding: 2px 9px; font-size: 11px;">Clear Log</button>
+                </div>
+                <div class="modal-console" id="openglConsoleLog" style="height: 155px;">
+                  <span class="log-dim">[NX CORE] Ready. Click 'Start' to apply GameLoop OpenGL engine or 'Remove' to fix VT/restore default settings.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: SYSTEM CLEANER (PORTED FROM NXTWEAKSC)
+             ================================================================== -->
+        <section class="view-pane" id="view-clean">
+          <div class="clean-container">
+            <!-- Header bar with summary & Quick Actions -->
+            <div class="clean-top-strip">
+              <div>
+                <span style="font-size: 13px; color: var(--text-secondary); display: block;">
+                  Clean temporary cache, network sockets, GPU shaders, and unnecessary disk footprint.
+                </span>
+                <span style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">
+                  Kernel level file purges & emulator removal scripts
+                </span>
+              </div>
+              <div style="display:flex; gap:10px; align-items:center;">
+                <button class="seg-btn" type="button" id="btnQuickCleanTemp" data-action="clear-temp">
+                  <i class="ri-delete-bin-5-line" style="font-size:13px;"></i>
+                  <span>Quick Temp Clean</span>
+                </button>
+                <button class="seg-btn active" type="button" id="btnFullCleanHero" data-action="full-clean">
+                  <i class="ri-sparkling-fill" style="font-size:13px;"></i>
+                  <span>Run Full Clean</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Clean Hardware / System Overview Sub-grid -->
+            <div class="hw-sub-grid">
+              <div class="hw-sub-box">
+                <span>Temp Buffers</span>
+                <strong style="color: var(--text-primary);">%TEMP% + Prefetch</strong>
+              </div>
+              <div class="hw-sub-box">
+                <span>Network Stack</span>
+                <strong style="color: var(--status-ok);">DNS + Winsock Catalog</strong>
+              </div>
+              <div class="hw-sub-box">
+                <span>GPU Shader Caches</span>
+                <strong style="color: var(--text-primary);">DirectX / NV / AMD / Intel</strong>
+              </div>
+              <div class="hw-sub-box">
+                <span>Emulator Remnants</span>
+                <strong style="color: #ef4444;">TxGameAssistant & Drivers</strong>
+              </div>
+            </div>
+
+            <!-- The 6 Clean Cards / Action Tiles matching NXTweaksC -->
+            <div class="clean-grid">
+              <!-- 1. Full Clean -->
+              <div class="clean-card" id="cardFullClean">
+                <div class="clean-card-header">
+                  <div class="clean-card-icon">
+                    <i class="ri-magic-line"></i>
+                  </div>
+                  <div class="clean-card-body">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+                      <h4 data-i18n="btn-full-clean">Full Clean</h4>
+                      <span class="chip" style="font-size:10px; padding:2px 6px;">Recommended</span>
+                    </div>
+                    <p data-i18n="clean-subtitle">Complete temp files, Windows Prefetch, Recent history, and DNS cache cleanup.</p>
+                  </div>
+                </div>
+                <div class="clean-card-footer">
+                  <span style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono);">Action: full-clean</span>
+                  <button type="button" class="clean-card-btn" data-action="full-clean" title="Complete temp files & system junk cleanup">
+                    <i class="ri-play-fill"></i>
+                    <span>Clean All</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 2. IP Flush -->
+              <div class="clean-card" id="cardIpFlush">
+                <div class="clean-card-header">
+                  <div class="clean-card-icon">
+                    <i class="ri-router-line"></i>
+                  </div>
+                  <div class="clean-card-body">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+                      <h4 data-i18n="btn-ip-flush">IP Flush</h4>
+                      <span class="chip" style="font-size:10px; padding:2px 6px;">Network</span>
+                    </div>
+                    <p>Reset Winsock catalog, flush DNS cache, and release/renew IP adapter leases.</p>
+                  </div>
+                </div>
+                <div class="clean-card-footer">
+                  <span style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono);">Action: ip-flush</span>
+                  <button type="button" class="clean-card-btn" data-action="ip-flush" title="Reset Winsock & flush DNS cache">
+                    <i class="ri-wifi-line"></i>
+                    <span>Flush IP</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 3. Clear Temp -->
+              <div class="clean-card" id="cardClearTemp">
+                <div class="clean-card-header">
+                  <div class="clean-card-icon">
+                    <i class="ri-delete-bin-5-line"></i>
+                  </div>
+                  <div class="clean-card-body">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+                      <h4 data-i18n="btn-clear-temp">Clear Temp</h4>
+                      <span class="chip" style="font-size:10px; padding:2px 6px;">Storage</span>
+                    </div>
+                    <p>Purge %TEMP% user temporary files and system C:\Windows\Temp folder contents.</p>
+                  </div>
+                </div>
+                <div class="clean-card-footer">
+                  <span style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono);">Action: clear-temp</span>
+                  <button type="button" class="clean-card-btn" data-action="clear-temp" title="Purge %TEMP% & Prefetch cache">
+                    <i class="ri-delete-bin-line"></i>
+                    <span>Purge Temp</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 4. Clean GPU -->
+              <div class="clean-card" id="cardCleanGpu">
+                <div class="clean-card-header">
+                  <div class="clean-card-icon">
+                    <i class="ri-cpu-line"></i>
+                  </div>
+                  <div class="clean-card-body">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+                      <h4 data-i18n="btn-clean-gpu">Clean GPU</h4>
+                      <span class="chip" style="font-size:10px; padding:2px 6px;">DirectX / Shaders</span>
+                    </div>
+                    <p>Flush DirectX D3DSCache, NVIDIA DX/GL/NV cache, AMD DxCache, and Intel ShaderCache.</p>
+                  </div>
+                </div>
+                <div class="clean-card-footer">
+                  <span style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono);">Action: clean-gpu</span>
+                  <button type="button" class="clean-card-btn" data-action="clean-gpu" title="Flush DirectX & shader cache">
+                    <i class="ri-refresh-line"></i>
+                    <span>Clean GPU Cache</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 5. DELETE GAMELOOP (Danger) -->
+              <div class="clean-card danger" id="cardDeleteGameloop">
+                <div class="clean-card-header">
+                  <div class="clean-card-icon">
+                    <i class="ri-error-warning-line"></i>
+                  </div>
+                  <div class="clean-card-body">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+                      <h4 style="color:#f87171;" data-i18n="btn-delete-gameloop">DELETE GAMELOOP</h4>
+                      <span class="chip" style="font-size:10px; padding:2px 6px; background:rgba(239,68,68,0.18); color:#fca5a5; border-color:rgba(239,68,68,0.35);">Danger</span>
+                    </div>
+                    <p>Complete emulator & registry removal: force-kills processes, stops drivers & uninstalls files.</p>
+                  </div>
+                </div>
+                <div class="clean-card-footer">
+                  <span style="font-size:11px; color:#ef4444; font-family:var(--font-mono);">Action: delete-gameloop</span>
+                  <button type="button" class="clean-card-btn" data-action="delete-gameloop" title="Complete emulator & registry removal">
+                    <i class="ri-delete-bin-2-line"></i>
+                    <span>Delete GameLoop</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cleaning Console Log Box -->
+            <div class="clean-console-wrap">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="status-indicator"></span>
+                  <h4 style="font-size:13px; font-weight:700; color:var(--text-primary); margin:0;">Cleaner Live Log</h4>
+                </div>
+                <button class="seg-btn" type="button" id="btnClearCleanLog" style="padding: 2px 9px; font-size: 11px;">Clear Log</button>
+              </div>
+              <div class="modal-console" id="cleanConsoleLog" style="height: 140px;">
+                <span class="log-dim">// system cleaner engine ready... waiting for clean action.</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Theme Selector Dropdown Panel -->
+  <div class="theme-dropdown-panel" id="themeDropdownPanel">
+    <div class="theme-dropdown-header">
+      <div>
+        <h4>Color Theme (الثيمات)</h4>
+        <p>Choose visual atmosphere & accents</p>
+      </div>
+      <button class="seg-btn" type="button" id="btnCloseThemePanel" style="padding: 2px 7px; font-size: 11px;">✕</button>
+    </div>
+    <div class="theme-options-list" id="themeOptionsList">
+      <!-- 1. Shark Cyber Cyan (Default - Official Logo) -->
+      <div class="theme-card-option active" data-theme-id="shark">
+        <div class="theme-card-left">
+          <div class="theme-swatch-ring" style="background: linear-gradient(135deg, #00f0ff, #0284c7); box-shadow: 0 0 10px rgba(0,210,255,0.45);"></div>
+          <div class="theme-card-info">
+            <h5>Shark Cyber Cyan (اللوجو الرسمي - سايبر سيان)</h5>
+            <span>أزرق سايبر متناسق مع لوجو البرنامج مع خلفية محيطية هادئة وفخمة</span>
+          </div>
+        </div>
+        <i class="ri-check-line theme-check-icon"></i>
+      </div>
+
+      <!-- 2. Monochrome B&W -->
+      <div class="theme-card-option" data-theme-id="bw">
+        <div class="theme-card-left">
+          <div class="theme-swatch-ring" style="background: linear-gradient(135deg, #ffffff, #a1a1aa);"></div>
+          <div class="theme-card-info">
+            <h5>Monochrome Obsidian</h5>
+            <span>أبيض وأسود فخم وهادي</span>
+          </div>
+        </div>
+        <i class="ri-check-line theme-check-icon"></i>
+      </div>
+
+      <!-- 3. Champagne Gold -->
+      <div class="theme-card-option" data-theme-id="gold">
+        <div class="theme-card-left">
+          <div class="theme-swatch-ring" style="background: linear-gradient(135deg, #f3d99d, #e5c07b);"></div>
+          <div class="theme-card-info">
+            <h5>Champagne Gold</h5>
+            <span>ذهبي VIP ملكي فخم</span>
+          </div>
+        </div>
+        <i class="ri-check-line theme-check-icon"></i>
+      </div>
+
+      <!-- 4. Cyber Ice Blue -->
+      <div class="theme-card-option" data-theme-id="ice">
+        <div class="theme-card-left">
+          <div class="theme-swatch-ring" style="background: linear-gradient(135deg, #93c5fd, #60a5fa);"></div>
+          <div class="theme-card-info">
+            <h5>Deep Royal Navy</h5>
+            <span>كحلي أزرق ليلي غامق</span>
+          </div>
+        </div>
+        <i class="ri-check-line theme-check-icon"></i>
+      </div>
+
+      <!-- 5. Phantom Emerald -->
+      <div class="theme-card-option" data-theme-id="emerald">
+        <div class="theme-card-left">
+          <div class="theme-swatch-ring" style="background: linear-gradient(135deg, #86efac, #4ade80);"></div>
+          <div class="theme-card-info">
+            <h5>Phantom Emerald</h5>
+            <span>أخضر ريزر مصفوفي رايق</span>
+          </div>
+        </div>
+        <i class="ri-check-line theme-check-icon"></i>
+      </div>
+
+      <!-- 6. Bloodline Crimson -->
+      <div class="theme-card-option" data-theme-id="crimson">
+        <div class="theme-card-left">
+          <div class="theme-swatch-ring" style="background: linear-gradient(135deg, #fb7185, #f43f5e);"></div>
+          <div class="theme-card-info">
+            <h5>Bloodline Crimson</h5>
+            <span>أحمر ROG جيمينج قوي</span>
+          </div>
+        </div>
+        <i class="ri-check-line theme-check-icon"></i>
+      </div>
+
+      <!-- 7. Amethyst Violet -->
+      <div class="theme-card-option" data-theme-id="violet">
+        <div class="theme-card-left">
+          <div class="theme-swatch-ring" style="background: linear-gradient(135deg, #c084fc, #a855f7);"></div>
+          <div class="theme-card-info">
+            <h5>Amethyst Violet</h5>
+            <span>بنفسجي سايبر أنيق</span>
+          </div>
+        </div>
+        <i class="ri-check-line theme-check-icon"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification History Drawer -->
+  <aside class="notif-drawer" id="notifDrawer">
+    <div class="notif-drawer-head">
+      <strong style="font-size: 12.5px;">Notifications</strong>
+      <button class="seg-btn" type="button" id="btnClearNotifs" style="padding: 4px 10px; font-size: 11px;">Clear</button>
+    </div>
+    <div class="notif-drawer-list" id="notifHistoryList"></div>
+  </aside>
+
+  <!-- Toast Stack -->
+  <div class="toast-stack" id="toastStack"></div>
+
+  <!-- Tweaks Execution Modal Popup (شاشة التحميل المنبثقة) -->
+  <div class="modal-overlay" id="tweakModalOverlay">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="modal-spinner" id="modalSpinner"></div>
+          <div>
+            <h3 id="modalTitle" style="font-size:15px; font-weight:700; color:var(--text-primary); margin:0;">Applying System Tweaks...</h3>
+            <p id="modalSubtitle" style="font-size:11.5px; color:var(--text-secondary); margin:0;">Executing batch optimizations in kernel space</p>
+          </div>
+        </div>
+        <span class="chip" id="modalStatusBadge">0%</span>
+      </div>
+
+      <div class="modal-body">
+        <div class="progress-track" style="height:6px; margin: 14px 0 14px;">
+          <div class="progress-fill" id="modalProgressBar" style="width: 0%;"></div>
+        </div>
+
+        <div class="modal-console" id="modalConsoleLog">
+          <span class="log-dim">// shark (shk) batch engine initialized...</span>
+        </div>
+      </div>
+
+      <div class="modal-footer" id="modalFooter" style="display:none;">
+        <button class="btn-primary-auth" type="button" id="modalBtnClose" style="width:100%; height:38px;">
+          <span>Done (Close)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete GameLoop Confirmation Modal (Ported from NXTweaksC) -->
+  <div class="modal-overlay" id="deleteGameloopModalOverlay">
+    <div class="modal-window" style="max-width: 480px; border-color: rgba(239, 68, 68, 0.4); box-shadow: 0 16px 48px rgba(239, 68, 68, 0.2), var(--shadow-float);">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:38px; height:38px; border-radius:var(--radius-sm); background:rgba(239, 68, 68, 0.15); border:1px solid rgba(239, 68, 68, 0.35); display:flex; align-items:center; justify-content:center; color:#ef4444; font-size:19px;">
+            <i class="ri-error-warning-fill"></i>
+          </div>
+          <div>
+            <h3 style="font-size:15px; font-weight:700; color:var(--text-primary); margin:0;" data-i18n="confirm-delete-title">WARNING</h3>
+            <p style="font-size:11.5px; color:#ef4444; margin:0;">Complete Emulator Deletion</p>
+          </div>
+        </div>
+        <button class="seg-btn" type="button" id="btnCancelDeleteGameloopX" style="padding: 2px 7px; font-size: 11px;">✕</button>
+      </div>
+
+      <div class="modal-body" style="padding:14px 0 20px 0;">
+        <h4 style="font-size:14.5px; font-weight:700; color:var(--text-primary); margin:0 0 8px 0;" data-i18n="confirm-delete-gameloop-msg">
+          Are You Sure To Delete GameLoop Completely?
+        </h4>
+        <p style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin:0;" data-i18n="confirm-delete-gameloop-sub">
+          This action will completely terminate and remove the GameLoop emulator, Tencent background services, aow_drv drivers, temporary cache, and registry configurations.
+        </p>
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:flex-end;">
+        <button class="seg-btn" type="button" id="btnCancelDeleteGameloop" style="padding:8px 18px; font-size:12px;">
+          <span data-i18n="confirm-no">No, Cancel</span>
+        </button>
+        <button type="button" id="btnConfirmDeleteGameloop" style="background:#ef4444; color:#fff; border:none; border-radius:var(--radius-sm); padding:8px 18px; font-size:12px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(239,68,68,0.4); transition:all 0.18s ease;">
+          <i class="ri-delete-bin-line"></i>
+          <span data-i18n="confirm-yes">Yes, Delete Completely</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GameLoop Boost & OpenGL Turbo Modal Popup (Ported from NXTweaksC / OpenGL) -->
+  <div class="boost-overlay" id="boostOverlay"></div>
+  <div class="boost-modal" id="boostModal">
+    <div class="boost-modal-header">
+      <div class="boost-title-wrap">
+        <i class="ri-rocket-line boost-header-icon" id="boostHeaderIcon"></i>
+        <span class="boost-modal-title" id="boostModalTitle">GAMELOOP FIX OPEN GL</span>
+      </div>
+      <button class="boost-modal-close" id="boostCloseBtn" title="Close"><i class="ri-close-line"></i></button>
+    </div>
+    <div class="boost-modal-body">
+      <div class="boost-visual-container">
+        <div class="boost-icon-circle" id="boostIconCircle">
+          <i class="ri-cube-line" id="boostVisualIcon"></i>
+        </div>
+      </div>
+
+      <div class="boost-percentage-wrap">
+        <span class="boost-percentage-number" id="boostPercentNumber">0</span><span class="boost-percentage-sign">%</span>
+      </div>
+
+      <h3 class="boost-status-title" id="boostStatusTitle">Initializing Turbo Boost...</h3>
+      <p class="boost-status-desc" id="boostStatusDesc">Connecting to ADB engine & preparing parameters...</p>
+
+      <div class="boost-progress-track">
+        <div class="boost-progress-fill" id="boostProgressBar" style="width: 0%;"></div>
+      </div>
+
+      <div class="boost-steps-info">
+        <span id="boostStepCounter"><i class="ri-stack-line"></i> Step 0/9</span>
+        <span id="boostStepSpeed"><i class="ri-flashlight-line"></i> Fast</span>
+      </div>
+
+      <div class="boost-footer" id="boostFooter" style="display: none;">
+        <button class="boost-finish-btn" id="boostFinishBtn">
+          <i class="ri-checkbox-circle-line"></i> <span>Done</span>
+        </button>
+      </div>
+    </div>
+  </div>
+<script src="app.js"></script>
+</body>
+</html>
