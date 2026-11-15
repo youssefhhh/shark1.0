@@ -195,6 +195,10 @@
     'view-opengl': {
       title: 'OPEN GL Fixer',
       sub: 'Start or remove the OpenGL rendering fix.'
+    },
+    'view-blockupdate': {
+      title: 'Block Update',
+      sub: 'Block or unblock GameLoop update servers in Windows hosts file.'
     }
   };
 
@@ -219,6 +223,9 @@
       }
       if (targetId === 'view-aim') {
         window.chrome?.webview?.postMessage(JSON.stringify({ action: 'get_aim_settings' }));
+      }
+      if (targetId === 'view-blockupdate') {
+        checkBlockUpdateStatus();
       }
     });
   });
@@ -1449,6 +1456,97 @@
   }
 
   // =========================================================================
+  // --- Block Update Controller (Hosts File Redirection) ---
+  // =========================================================================
+  const btnBlockUpdate = document.getElementById('btnBlockUpdate');
+  const btnUnblockUpdate = document.getElementById('btnUnblockUpdate');
+  const blockUpdateStateBadge = document.getElementById('blockUpdateStateBadge');
+  const blockUpdateStatusText = document.getElementById('blockUpdateStatusText');
+  const blockUpdateConsoleLog = document.getElementById('blockUpdateConsoleLog');
+  const btnClearBlockUpdateLog = document.getElementById('btnClearBlockUpdateLog');
+
+  function appendBlockUpdateLog(line, tag = '[HOSTS]') {
+    if (!blockUpdateConsoleLog) return;
+    const entry = document.createElement('div');
+    entry.style.fontFamily = 'var(--font-mono)';
+    entry.style.fontSize = '11px';
+    entry.style.lineHeight = '1.6';
+
+    let color = 'var(--text-secondary)';
+    if (line.includes('[+]') || line.includes('[SUCCESS]') || line.includes('Successfully') || line.includes('blocked') || line.includes('restored')) {
+      color = 'var(--status-ok)';
+    } else if (line.includes('[!]') || line.includes('Error') || line.includes('fail') || line.includes('denied')) {
+      color = '#ef4444';
+    } else if (line.includes('[*]') || line.includes('Checking') || line.includes('Processing')) {
+      color = '#f59e0b';
+    }
+
+    const tagColor = 'var(--accent)';
+    const time = new Date().toLocaleTimeString();
+    entry.innerHTML = `<span style="color:var(--text-muted);">[${time}]</span> <span style="color:${tagColor};font-weight:700;">${tag}</span> <span style="color:${color};">${line}</span>`;
+    blockUpdateConsoleLog.appendChild(entry);
+    blockUpdateConsoleLog.scrollTop = blockUpdateConsoleLog.scrollHeight;
+  }
+
+  if (btnClearBlockUpdateLog && blockUpdateConsoleLog) {
+    btnClearBlockUpdateLog.addEventListener('click', () => {
+      blockUpdateConsoleLog.innerHTML = `<span class="log-dim">[NX HOSTS] Log cleared. Ready.</span>`;
+    });
+  }
+
+  function checkBlockUpdateStatus() {
+    if (window.chrome?.webview) {
+      window.chrome.webview.postMessage(JSON.stringify({ action: 'get_block_update_status' }));
+    }
+  }
+
+  function downloadHostsBatch(isBlock) {
+    let script = '';
+    if (isBlock) {
+      script = `@echo off\r\n:: NX SHARK - Block GameLoop Update\r\nnet session >nul 2>&1\r\nif %errorlevel% neq 0 (\r\n  powershell -Command "Start-Process '%~f0' -Verb RunAs"\r\n  exit /b\r\n)\r\nset "HP=%windir%\\System32\\drivers\\etc\\hosts"\r\nattrib -r "%HP%" >nul 2>&1\r\nfindstr /i "unifiedaccess.gameloop.com" "%HP%" >nul\r\nif %errorlevel% neq 0 (\r\n  >>"%HP%" echo.\r\n  >>"%HP%" echo # [GameLoop Block Update - SHARK Tweaker]\r\n  >>"%HP%" echo 127.0.0.1 unifiedaccess.gameloop.com\r\n  >>"%HP%" echo 127.0.0.1 down.gameloop.com\r\n  >>"%HP%" echo 127.0.0.1 update.gameloop.com\r\n  >>"%HP%" echo 127.0.0.1 dl.gameloop.com\r\n  >>"%HP%" echo 127.0.0.1 syzs.qq.com\r\n)\r\nipconfig /flushdns >nul 2>&1\r\necho GameLoop Update Blocked Successfully in hosts!\r\npause\r\n`;
+    } else {
+      script = `@echo off\r\n:: NX SHARK - Unblock GameLoop Update\r\nnet session >nul 2>&1\r\nif %errorlevel% neq 0 (\r\n  powershell -Command "Start-Process '%~f0' -Verb RunAs"\r\n  exit /b\r\n)\r\nset "HP=%windir%\\System32\\drivers\\etc\\hosts"\r\nattrib -r "%HP%" >nul 2>&1\r\npowershell -NoProfile -Command "$h = '$env:windir\\System32\\drivers\\etc\\hosts'; (Get-Content $h) | Where-Object { $_ -notmatch 'unifiedaccess\\.gameloop\\.com|down\\.gameloop\\.com|update\\.gameloop\\.com|dl\\.gameloop\\.com|syzs\\.qq\\.com|gameloop block update' } | Set-Content $h -Force"\r\nipconfig /flushdns >nul 2>&1\r\necho GameLoop Update Unblocked and hosts restored!\r\npause\r\n`;
+    }
+    const blob = new Blob([script], { type: 'application/bat' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = isBlock ? 'Block_GameLoop_Update.bat' : 'Unblock_GameLoop_Update.bat';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  if (btnBlockUpdate) {
+    btnBlockUpdate.addEventListener('click', () => {
+      playTone(520, 0.05);
+      appendBlockUpdateLog('Adding GameLoop update domains to hosts file...', '[BLOCK]');
+      if (window.chrome?.webview) {
+        window.chrome.webview.postMessage(JSON.stringify({ action: 'block_update' }));
+      } else {
+        downloadHostsBatch(true);
+        notify('Block Update', 'Batch script downloaded. Run it as Administrator.', 'success');
+        appendBlockUpdateLog('[+] Downloaded Block_GameLoop_Update.bat (Run as Admin)', '[FALLBACK]');
+      }
+    });
+  }
+
+  if (btnUnblockUpdate) {
+    btnUnblockUpdate.addEventListener('click', () => {
+      playTone(440, 0.05);
+      appendBlockUpdateLog('Removing GameLoop update domains from hosts file...', '[UNBLOCK]');
+      if (window.chrome?.webview) {
+        window.chrome.webview.postMessage(JSON.stringify({ action: 'unblock_update' }));
+      } else {
+        downloadHostsBatch(false);
+        notify('Unblock Update', 'Restore script downloaded. Run it as Administrator.', 'success');
+        appendBlockUpdateLog('[+] Downloaded Unblock_GameLoop_Update.bat (Run as Admin)', '[FALLBACK]');
+      }
+    });
+  }
+
+  // =========================================================================
   // --- System Cleaner Controller (Ported from NXTweaksC) ---
   // =========================================================================
   const deleteGameloopModalOverlay = document.getElementById('deleteGameloopModalOverlay');
@@ -1631,6 +1729,7 @@
           window.chrome?.webview?.postMessage('check-gameloop');
           window.chrome?.webview?.postMessage('get-hud-config');
           window.chrome?.webview?.postMessage('get-gameloop-config');
+          window.chrome?.webview?.postMessage(JSON.stringify({ action: 'get_block_update_status' }));
         } else if (data.autoLogin && data.savedKey) {
           setLoginButtonState(true, 'Authenticating...');
           window.chrome?.webview?.postMessage(JSON.stringify({
@@ -1982,6 +2081,27 @@
           }
           notify('OpenGL Error', data.message || 'Error occurred while configuring OpenGL.', 'danger');
           updateBoostModal(100, 'Operation Failed', data.message || 'An error occurred during execution.', 'Error', 'error', data.action === 'fix_opengl' ? 'GAMELOOP FIX OPEN GL' : 'GAMELOOP FIX VT', 'ri-error-warning-fill');
+        }
+      } else if (data && (data.type === 'block-update-status' || data.action === 'block_update' || data.action === 'unblock_update' || data.action === 'get_block_update_status')) {
+        const isBlocked = !!data.blocked;
+        if (blockUpdateStateBadge) {
+          if (isBlocked) {
+            blockUpdateStateBadge.textContent = 'Blocked (Active)';
+            blockUpdateStateBadge.style.color = '#ef4444';
+            blockUpdateStateBadge.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+          } else {
+            blockUpdateStateBadge.textContent = 'Unblocked (Standby)';
+            blockUpdateStateBadge.style.color = 'var(--status-ok)';
+            blockUpdateStateBadge.style.borderColor = 'rgba(46, 160, 67, 0.4)';
+          }
+        }
+        if (blockUpdateStatusText) {
+          blockUpdateStatusText.textContent = isBlocked ? 'Blocked (Protected from updates)' : 'Unblocked (Normal updates enabled)';
+          blockUpdateStatusText.style.color = isBlocked ? '#ef4444' : 'var(--status-ok)';
+        }
+        if (data.message) {
+          appendBlockUpdateLog(data.message, data.action === 'unblock_update' ? '[UNBLOCK]' : '[BLOCK]');
+          notify('Block Update', data.message, data.success ? 'success' : 'err');
         }
       } else if (data && data.type === 'gameloop-config-result') {
         syncGameLoopConfigUI(data);

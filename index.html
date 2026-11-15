@@ -204,6 +204,12 @@
                 <span>OPEN GL Fixer</span>
               </div>
             </li>
+            <li class="nav-item" data-target="view-blockupdate">
+              <div class="nav-item-left">
+                <i class="ri-shield-keyhole-line"></i>
+                <span>Block Update</span>
+              </div>
+            </li>
           </ul>
         </div>
       </div>
@@ -1431,6 +1437,38 @@
                 <div class="modal-console" id="openglConsoleLog" style="height: 155px;">
                   <span class="log-dim">[NX CORE] Ready. Click 'Start' to apply GameLoop OpenGL engine or 'Remove' to fix VT/restore default settings.</span>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: BLOCK UPDATE (STRICTLY 2 BUTTONS)
+             ================================================================== -->
+        <section class="view-pane" id="view-blockupdate">
+          <div class="blockupdate-center-wrap">
+            <div class="surface-card blockupdate-hero-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <div>
+                  <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">Block Update</h2>
+                  <p style="color: var(--text-secondary); font-size: 12.5px;">
+                    Block automatic GameLoop updates to prevent game crashes, emulator version mismatch, and unwanted patches.
+                  </p>
+                </div>
+                <span class="chip" id="blockUpdateStateBadge">Standby</span>
+              </div>
+
+              <!-- Strictly 2 Buttons: Block Update & Unblock Update -->
+              <div class="blockupdate-two-buttons" style="margin-top: 10px;">
+                <button type="button" class="btn-block-apply" id="btnBlockUpdate">
+                  <i class="ri-shield-keyhole-line"></i>
+                  <span>Block Update</span>
+                </button>
+
+                <button type="button" class="btn-block-remove" id="btnUnblockUpdate">
+                  <i class="ri-refresh-line"></i>
+                  <span>Unblock Update</span>
+                </button>
               </div>
             </div>
           </div>
